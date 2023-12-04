@@ -1,17 +1,19 @@
+// example module. pubic so that it's callable from elsewhere
 pub mod hello_world {
+    // function must also be public to be callable
     pub fn hello() {
         println!("Hello from the crate library!")
     }
 }
 
+// second public module in the same library
 pub mod guessing_game {
+    // calls to external dependencies. rand must be defined in cargo.toml to be used here
     use rand::Rng;
     use std::cmp::Ordering;
     use std::io;
 
-    pub fn guessing() {
-        println!("Guess a number between 1 and 100!");
-
+    fn game_loop() {
         let secret_number = rand::thread_rng().gen_range(1..=100);
 
         loop {
@@ -39,5 +41,11 @@ pub mod guessing_game {
                 }
             }
         }
+    }
+
+    pub fn guessing() {
+        println!("Guess a number between 1 and 100!");
+
+        game_loop();
     }
 }
