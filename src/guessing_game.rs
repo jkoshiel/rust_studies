@@ -3,11 +3,9 @@ use rand::Rng;
 //multiple items can be brought into scope using nested paths
 use std::{cmp::Ordering, io};
 
-fn game_loop() {
-    let secret_number = rand::thread_rng().gen_range(1..=100);
-
+fn game_loop(secret: u32, lower: u32, upper: u32) {
     loop {
-        println!("Please input your guess:");
+        println!("Guess a number between {} and {}!", lower, upper);
 
         let mut guess: String = String::new();
 
@@ -22,7 +20,7 @@ fn game_loop() {
 
         println!("You guessed: {}", guess);
 
-        match guess.cmp(&secret_number) {
+        match guess.cmp(&secret) {
             Ordering::Less => println!("Your guess is too low!"),
             Ordering::Greater => println!("Your guess is too high!"),
             Ordering::Equal => {
@@ -34,7 +32,16 @@ fn game_loop() {
 }
 
 pub fn guessing() {
-    println!("Guess a number between 1 and 100!");
+    let lower_bound: u32 = 1;
+    let upper_bound: u32 = 100;
 
-    game_loop();
+    assert_eq!(
+        upper_bound.cmp(&lower_bound),
+        Ordering::Greater,
+        "The upper bound must be higher than the lower bound!"
+    );
+
+    let secret_number: u32 = rand::thread_rng().gen_range(lower_bound..=upper_bound);
+
+    game_loop(secret_number, lower_bound, upper_bound);
 }
