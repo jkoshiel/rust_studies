@@ -3,6 +3,28 @@ use rand::Rng;
 //multiple items can be brought into scope using nested paths
 use std::{cmp::Ordering, io};
 
+fn get_max() -> u32 {
+    println!("Choose your difficulty level. Enter the corresponding number:");
+    println!("(1) easy, (2) normal, (3) hard");
+    println!("Invalid selection will result in a normal game.");
+
+    let mut selection: String = String::new();
+
+    io::stdin()
+        .read_line(&mut selection)
+        .expect("Failed to read line");
+
+    let selection: u32 = selection.trim().parse().unwrap_or(2);
+
+    let max: u32 = match &selection {
+        1 => 10,
+        3 => 1000,
+        _ => 100,
+    };
+
+    max
+}
+
 fn game_loop(secret: u32, max: u32) {
     loop {
         println!("Guess a number between 1 and {}!", max);
@@ -37,24 +59,7 @@ fn game_loop(secret: u32, max: u32) {
 }
 
 pub fn guessing() {
-    println!("Choose your difficulty level. Enter the corresponding number:");
-    println!("(1) easy, (2) normal, (3) hard");
-    println!("Invalid selection will result in a normal game.");
-
-    let mut selection: String = String::new();
-
-    io::stdin()
-        .read_line(&mut selection)
-        .expect("Failed to read line");
-
-    let selection: u32 = selection.trim().parse().unwrap_or(2);
-
-    let max: u32 = match &selection {
-        1 => 10,
-        3 => 1000,
-        _ => 100,
-    };
-
+    let max: u32 = get_max();
     let secret_number: u32 = rand::thread_rng().gen_range(1..=max);
 
     game_loop(secret_number, max);
