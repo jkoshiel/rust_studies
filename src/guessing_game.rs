@@ -3,9 +3,37 @@ use rand::Rng;
 //multiple items can be brought into scope using nested paths
 use std::{cmp::Ordering, io};
 
-fn game_loop(secret: u32, lower: u32, upper: u32) {
+// pub struct Guess {
+//     value: u32,
+// }
+
+// impl Guess {
+//     pub fn check(value: u32) -> Guess {
+//         if !(1..=100).contains(&value) {
+//             println!("Guess value must be between 1 and 100, got {}", value);
+//         }
+
+//         Guess { value }
+//     }
+
+//     pub fn value(&self) -> u32 {
+//         self.value
+//     }
+// }
+
+struct Max {
+    value: u32,
+}
+
+impl Max {
+    pub fn choose() {
+        todo!();
+    }
+}
+
+fn game_loop(secret: u32, max: u32) {
     loop {
-        println!("Guess a number between {} and {}!", lower, upper);
+        println!("Guess a number between 1 and {}!", max);
 
         let mut guess: String = String::new();
 
@@ -17,6 +45,13 @@ fn game_loop(secret: u32, lower: u32, upper: u32) {
             Ok(num) => num,
             Err(_) => continue,
         };
+
+        if !(1..=100).contains(&guess) {
+            println!("Guess value must be between 1 and 100, got {}", guess);
+            continue;
+        }
+
+        // Guess::check(guess);
 
         println!("You guessed: {}", guess);
 
@@ -32,16 +67,9 @@ fn game_loop(secret: u32, lower: u32, upper: u32) {
 }
 
 pub fn guessing() {
-    let lower_bound: u32 = 1;
     let upper_bound: u32 = 100;
 
-    assert_eq!(
-        upper_bound.cmp(&lower_bound),
-        Ordering::Greater,
-        "The upper bound must be higher than the lower bound!"
-    );
+    let secret_number: u32 = rand::thread_rng().gen_range(1..=upper_bound);
 
-    let secret_number: u32 = rand::thread_rng().gen_range(lower_bound..=upper_bound);
-
-    game_loop(secret_number, lower_bound, upper_bound);
+    game_loop(secret_number, upper_bound);
 }
