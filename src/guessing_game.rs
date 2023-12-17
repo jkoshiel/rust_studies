@@ -3,9 +3,37 @@ use rand::Rng;
 //multiple items can be brought into scope using nested paths
 use std::{cmp::Ordering, io};
 
-fn game_loop(secret: u32, lower: u32, upper: u32) {
+// enum Difficulty {
+//     Easy = 10,
+//     Normal = 100,
+//     Hard = 1000,
+// }
+
+// fn pick_difficulty() {
+//     println!("Choose your difficulty level. Enter the corresponding number:");
+//     println!("(1) easy, (2) normal, (3) hard");
+//     println!("Invalid selection will result in a normal game.");
+
+//     let mut selection: String = String::new();
+
+//     io::stdin()
+//         .read_line(&mut selection)
+//         .expect("Failed to read line");
+
+//     let selection: u32 = selection.trim().parse().unwrap_or(2);
+
+//     let max: u32;
+
+//     match &selection {
+//         1 => max = 10,
+//         3 => max = 1000,
+//         _ => max = 100,
+//     }
+// }
+
+fn game_loop(secret: u32, max: u32) {
     loop {
-        println!("Guess a number between {} and {}!", lower, upper);
+        println!("Guess a number between 1 and {}!", max);
 
         let mut guess: String = String::new();
 
@@ -17,6 +45,13 @@ fn game_loop(secret: u32, lower: u32, upper: u32) {
             Ok(num) => num,
             Err(_) => continue,
         };
+
+        if !(1..=max).contains(&guess) {
+            println!("Guess value must be between 1 and {}, got {}", max, guess);
+            continue;
+        }
+
+        // Guess::check(guess);
 
         println!("You guessed: {}", guess);
 
@@ -32,16 +67,27 @@ fn game_loop(secret: u32, lower: u32, upper: u32) {
 }
 
 pub fn guessing() {
-    let lower_bound: u32 = 1;
-    let upper_bound: u32 = 100;
+    // pick_difficulty();
 
-    assert_eq!(
-        upper_bound.cmp(&lower_bound),
-        Ordering::Greater,
-        "The upper bound must be higher than the lower bound!"
-    );
+    println!("Choose your difficulty level. Enter the corresponding number:");
+    println!("(1) easy, (2) normal, (3) hard");
+    println!("Invalid selection will result in a normal game.");
 
-    let secret_number: u32 = rand::thread_rng().gen_range(lower_bound..=upper_bound);
+    let mut selection: String = String::new();
 
-    game_loop(secret_number, lower_bound, upper_bound);
+    io::stdin()
+        .read_line(&mut selection)
+        .expect("Failed to read line");
+
+    let selection: u32 = selection.trim().parse().unwrap_or(2);
+
+    let max: u32 = match &selection {
+        1 => 10,
+        3 => 1000,
+        _ => 100,
+    };
+
+    let secret_number: u32 = rand::thread_rng().gen_range(1..=max);
+
+    game_loop(secret_number, max);
 }
