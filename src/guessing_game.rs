@@ -3,34 +3,6 @@ use rand::Rng;
 //multiple items can be brought into scope using nested paths
 use std::{cmp::Ordering, io};
 
-// enum Difficulty {
-//     Easy = 10,
-//     Normal = 100,
-//     Hard = 1000,
-// }
-
-// fn pick_difficulty() {
-//     println!("Choose your difficulty level. Enter the corresponding number:");
-//     println!("(1) easy, (2) normal, (3) hard");
-//     println!("Invalid selection will result in a normal game.");
-
-//     let mut selection: String = String::new();
-
-//     io::stdin()
-//         .read_line(&mut selection)
-//         .expect("Failed to read line");
-
-//     let selection: u32 = selection.trim().parse().unwrap_or(2);
-
-//     let max: u32;
-
-//     match &selection {
-//         1 => max = 10,
-//         3 => max = 1000,
-//         _ => max = 100,
-//     }
-// }
-
 fn game_loop(secret: u32, max: u32) {
     loop {
         println!("Guess a number between 1 and {}!", max);
@@ -51,8 +23,6 @@ fn game_loop(secret: u32, max: u32) {
             continue;
         }
 
-        // Guess::check(guess);
-
         println!("You guessed: {}", guess);
 
         match guess.cmp(&secret) {
@@ -67,8 +37,6 @@ fn game_loop(secret: u32, max: u32) {
 }
 
 pub fn guessing() {
-    // pick_difficulty();
-
     println!("Choose your difficulty level. Enter the corresponding number:");
     println!("(1) easy, (2) normal, (3) hard");
     println!("Invalid selection will result in a normal game.");
