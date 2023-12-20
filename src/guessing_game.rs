@@ -3,18 +3,28 @@ use rand::Rng;
 //multiple items can be brought into scope using nested paths
 use std::{cmp::Ordering, io};
 
+struct UserInput {
+    value: String,
+}
+
+impl UserInput {
+    fn capture() -> Self {
+        let mut value = String::new();
+        io::stdin()
+            .read_line(&mut value)
+            .expect("Failed to read line");
+        UserInput { value }
+    }
+}
+
 fn get_max() -> u32 {
     println!("Choose your difficulty level. Enter the corresponding number:");
     println!("(1) easy, (2) normal, (3) hard");
     println!("Invalid selection will result in a normal game.");
 
-    let mut selection: String = String::new();
+    let selection = UserInput::capture();
 
-    io::stdin()
-        .read_line(&mut selection)
-        .expect("Failed to read line");
-
-    let selection: u32 = selection.trim().parse().unwrap_or(2);
+    let selection: u32 = selection.value.trim().parse().unwrap_or(2);
 
     let max: u32 = match &selection {
         1 => 10,
@@ -29,13 +39,9 @@ fn game_loop(secret: u32, max: u32) {
     loop {
         println!("Guess a number between 1 and {}!", max);
 
-        let mut guess: String = String::new();
+        let guess = UserInput::capture();
 
-        io::stdin()
-            .read_line(&mut guess)
-            .expect("Failed to read line");
-
-        let guess: u32 = match guess.trim().parse() {
+        let guess: u32 = match guess.value.trim().parse() {
             Ok(num) => num,
             Err(_) => continue,
         };
