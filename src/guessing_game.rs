@@ -8,7 +8,7 @@ struct UserInput {
 }
 
 impl UserInput {
-    fn capture() -> Self {
+    fn new_from_stdin() -> Self {
         let mut value = String::new();
         io::stdin()
             .read_line(&mut value)
@@ -18,11 +18,11 @@ impl UserInput {
 }
 
 fn get_max() -> u32 {
-    println!("Choose your difficulty level. Enter the corresponding number:");
+    println!("Enter your desired difficulty level:");
     println!("(1) easy, (2) normal, (3) hard");
     println!("Invalid selection will result in a normal game.");
 
-    let selection = UserInput::capture();
+    let selection = UserInput::new_from_stdin();
 
     let selection: u32 = selection.value.trim().parse().unwrap_or(2);
 
@@ -39,7 +39,7 @@ fn game_loop(secret: u32, max: u32) {
     loop {
         println!("Guess a number between 1 and {}!", max);
 
-        let guess = UserInput::capture();
+        let guess = UserInput::new_from_stdin();
 
         let guess: u32 = match guess.value.trim().parse() {
             Ok(num) => num,
